@@ -8,7 +8,7 @@ import reportWebVitals from './reportWebVitals';
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
-    <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
       <h1>Demo React Chat-Bot (SK)</h1>
     </div> 
     <App />
