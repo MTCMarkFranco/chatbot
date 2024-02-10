@@ -18,7 +18,7 @@ export const App = () => {
       headers: {},
       additionalBodyProps: {}
     }}
-    style={{ borderRadius: 8, width: '100%' }}
+    style={{ borderRadius: 8, width: '100%', height: '100%' }}
   ></DeepChat> 
       
    </div>
