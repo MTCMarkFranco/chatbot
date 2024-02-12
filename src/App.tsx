@@ -7,6 +7,13 @@ export const App = () => {
     { role: 'user', text: 'Hi, what would you like to search on?' },
   ];
   
+  const responseInterceptor = (response: any) => {
+  
+    const filenames = response.records.map(record => record.filename).join(', ');
+    
+    return {text: filenames};
+  }
+
   return (
     
     <div className="App">
@@ -19,6 +26,7 @@ export const App = () => {
       additionalBodyProps: {}
     }}
     style={{ borderRadius: 8, width: '100%', height: '100%' }}
+    responseInterceptor={responseInterceptor}
   ></DeepChat> 
       
    </div>
