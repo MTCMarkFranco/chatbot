@@ -17,6 +17,8 @@ export const App = () => {
     
     } else if (response.synthesis) {
       chatResponse = response.synthesis.summary;
+    } else if (response.None) {
+      chatResponse = "Ok, Let's start a new search. What would you like to search on?";
     }
     
     return {text: chatResponse};
