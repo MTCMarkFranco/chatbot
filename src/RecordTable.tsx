@@ -15,7 +15,9 @@ const RecordTable = ({ records }) => (
         {records.map((record, index) => (
             <tr key={index}>
                 <td>{record.publisheddate}</td>
-                <td>{record.filename}</td>
+                <td>
+                    <a href={`${record.path}/${record.filename}`} rel="noreferrer" target="_blank">{record.filename}</a>
+                </td>
                 <td>{record.summary}</td>
                 <td>{record.rankedscore}</td>
             </tr>
