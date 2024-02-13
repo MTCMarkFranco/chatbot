@@ -27,6 +27,11 @@
   color: white;
 }
 
+.blue-bold-text {
+  color: blue;
+  font-weight: bold;
+}
+
 .App-link {
   color: #61dafb;
 }

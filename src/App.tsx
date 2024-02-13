@@ -1,6 +1,9 @@
 import { DeepChat } from 'deep-chat-react';
 import './App.css';
 import React from 'react';
+import ReactDOMServer from 'react-dom/server';
+import RecordTable from './RecordTable.tsx';
+import SynthesisTable from './SynthesisTable.tsx';
 
 export const App = () => {
   const initialMessages = [
@@ -12,16 +15,15 @@ export const App = () => {
     let chatResponse = '';
     
     if (response.records) {
-      chatResponse = response.records.map(record => record.filename).join(', ') + 
-        '\nWould you like to generate a synhtesis on these records?';
-    
+      chatResponse = ReactDOMServer.renderToString(<RecordTable records={response.records} />);
+
     } else if (response.synthesis) {
-      chatResponse = response.synthesis.summary;
+      chatResponse = ReactDOMServer.renderToString(<SynthesisTable synthesis={response.synthesis} />);
     } else if (response.None) {
-      chatResponse = "Ok, Let's start a new search. What would you like to search on?";
+      chatResponse = "<p>Ok, Let's start a new search. What would you like to search on?</p>";
     }
     
-    return {text: chatResponse};
+    return {html: chatResponse};
   }
 
   return (
