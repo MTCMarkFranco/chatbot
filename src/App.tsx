@@ -9,9 +9,17 @@ export const App = () => {
   
   const responseInterceptor = (response: any) => {
   
-    const filenames = response.records.map(record => record.filename).join(', ');
+    let chatResponse = '';
     
-    return {text: filenames};
+    if (response.records) {
+      chatResponse = response.records.map(record => record.filename).join(', ') + 
+        '\nWould you like to generate a synhtesis on these records?';
+    
+    } else if (response.synthesis) {
+      chatResponse = response.synthesis.summary;
+    }
+    
+    return {text: chatResponse};
   }
 
   return (
