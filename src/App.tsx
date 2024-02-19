@@ -32,7 +32,7 @@ export const App = () => {
     <DeepChat
     initialMessages={initialMessages}
     request={{
-      url: "http://127.0.0.1:5000/query",
+      url: "http://192.168.2.159:5000/query",
       method: "POST",
       headers: {},
       additionalBodyProps: {}
