@@ -9,6 +9,7 @@ export const App = () => {
   
   const apiUrl = "http://192.168.2.159:5000/chat";
   const lastQueryResults = useRef(null);
+  const deepchatref = useRef(null);
   const initialMessages = [
     { role: 'user', text: 'Hi, what would you like to search on?' },
   ];
@@ -16,26 +17,36 @@ export const App = () => {
 
   const requestInterceptor = (request: any) => {
         
-    if(lastQueryResults.current != null)    
+    let messages = deepchatref.current.getMessages();
+    let lastMessage = messages[messages.length - 1];
+
+    if(lastQueryResults.current != null && lastMessage.text.toLowerCase() === 'generate synthesis') {   
       request.body.records = lastQueryResults.current;
-    return request;
+      request.body.generate_synthesis = true;
+    }
+    return request;    
   }
+  
   
   const responseInterceptor = (response: any) => {
   
     let chatResponse = '';
     let synthesisButton = '';
 
-    if (response.records) {
+    if (response.records && response.records.length > 0) {
       lastQueryResults.current = response.records;
       chatResponse = ReactDOMServer.renderToString(<RecordTable records={response.records} />);
-      synthesisButton = "<div class='deep-chat-temporary-message'><button class='deep-chat-button deep-chat-suggestion-button' style='margin-top: 5px'>Generate Synthesis?</button></div>";
+      synthesisButton = "<div class='deep-chat-temporary-message'><button class='deep-chat-button deep-chat-suggestion-button' style='margin-top: 5px'>Generate Synthesis</button></div>";
     } 
     
     if (response.synthesis) {
       chatResponse = ReactDOMServer.renderToString(<SynthesisTable synthesis={response.synthesis} />);
       lastQueryResults.current = null;
-    }  
+    }
+
+    if(chatResponse === '') {
+      chatResponse = 'No records found... Please try again.';
+    }
 
     return {html: chatResponse + synthesisButton};
   }
@@ -43,7 +54,7 @@ export const App = () => {
   return (
     
     <div className="App">
-      <DeepChat 
+      <DeepChat ref={deepchatref} 
       initialMessages={initialMessages}
       request={{
         url: apiUrl,
