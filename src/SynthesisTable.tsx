@@ -16,7 +16,7 @@ const SynthesisTable = ({ synthesis }) => (
         <td> </td> 
       </tr>
       <tr>
-        <td className="blue-bold-text">Synthesis generation complete! Are your eady for a new search? Just type it in....</td>
+        <br></br>
       </tr>
     </tbody>
   </table>

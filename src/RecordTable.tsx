@@ -6,7 +6,6 @@ const RecordTable = ({ records }) => (
   <table>
     <thead>
       <tr>
-        <th>Select</th>
         <th>Published Date</th>
         <th>Article</th>
         <th>Relevant Document Extraction</th>
@@ -30,7 +29,7 @@ const RecordTable = ({ records }) => (
         <td> </td> 
       </tr>
       <tr>
-        <td className="blue-bold-text" colSpan="5">Would you like to generate a synthesis on these records?</td>
+        <br></br>
       </tr>
     </tbody>
   </table>
