@@ -4,10 +4,11 @@ import ReactDOMServer from 'react-dom/server';
 import RecordTable from './RecordTable.tsx';
 import SynthesisTable from './SynthesisTable.tsx';
 import React, { useRef } from 'react';
+import {Remarkable} from 'remarkable';
 
 export const App = () => {
   
-  const apiUrl = "http://192.168.2.159:5000/chat";
+  const apiUrl = "http://127.0.0.1:5000/chat";
   const lastQueryResults = useRef(null);
   const deepchatref = useRef(null);
   const initialMessages = [
@@ -48,7 +49,18 @@ export const App = () => {
       chatResponse = 'No records found... Please try again.';
     }
 
-    return {html: chatResponse + synthesisButton};
+    const remarkable = new Remarkable('full', {
+      html: true,
+      typographer: true,
+    });
+
+     
+    const htmlResponse = remarkable.render(chatResponse + synthesisButton);
+
+    const highlightedResponse = htmlResponse.replace(/<em>/g, '<mark style="background-color: yellow;">').replace(/<\/em>/g, '</mark>');
+   
+
+    return {html: highlightedResponse};
   }
 
   return (
