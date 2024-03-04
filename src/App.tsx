@@ -2,7 +2,7 @@ import { DeepChat } from 'deep-chat-react';
 import './App.css';
 import ReactDOMServer from 'react-dom/server';
 import RecordTable from './RecordTable.tsx';
-//import SynthesisTable from './SynthesisTable.tsx';
+import SynthesisTable from './SynthesisTable.tsx';
 import React, { useRef } from 'react';
 import {Remarkable} from 'remarkable';
 
@@ -10,14 +10,13 @@ export const App = () => {
   
   const apiUrl = "ws://127.0.0.1:5000/chat";
   const lastQueryResults = useRef(null);
-  const synthesisData = useRef(null);
+  const synthesisData = useRef('');
   const deepchatref = useRef(null);
   const initialMessages = [
     { role: 'user', text: 'Hi, what would you like to search on?' },
   ];
   lastQueryResults.current = null;
-  synthesisData.current = null;
-  
+    
   const handler = (body, signals) => {
     try {
         const websocket = new WebSocket(apiUrl);
@@ -33,7 +32,7 @@ export const App = () => {
           if (response.records && response.records.length > 0) {
             lastQueryResults.current = response.records;
             chatResponse = ReactDOMServer.renderToString(<RecordTable records={response.records} />);
-            synthesisData.current = null;
+            synthesisData.current = '';
             synthesisButton = "<div class='deep-chat-temporary-message'><button class='deep-chat-button deep-chat-suggestion-button' style='margin-top: 5px'>Generate Synthesis</button></div>";
             if(chatResponse === '') {
               chatResponse = 'No records found... Please try again.';
@@ -49,11 +48,11 @@ export const App = () => {
           signals.onResponse({html: highlightedResponse, overwrite: false});
       
           } else if (response) {
-            synthesisData.current += response;
-            // chatResponse = ReactDOMServer.renderToString(<SynthesisTable synthesis={response} />);
+            synthesisData.current += response.text;
+            chatResponse = ReactDOMServer.renderToString(<SynthesisTable synthesis={ synthesisData.current} />);
             lastQueryResults.current = null;
 
-            signals.onResponse(response);
+            signals.onResponse({html: chatResponse, overwrite: true});
           }
       }
       websocket.onclose = () => {
