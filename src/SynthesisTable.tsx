@@ -10,7 +10,7 @@ const SynthesisTable = ({ synthesis }) => (
     </thead>
     <tbody>
       <tr>
-        <td dangerouslySetInnerHTML={{ __html: synthesis.summary }}></td>
+        <td dangerouslySetInnerHTML={{ __html: synthesis }}></td>
       </tr>
       <tr>
         <td> </td> 
