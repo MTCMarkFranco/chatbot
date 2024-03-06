@@ -16,11 +16,10 @@ export const App = () => {
   lastQueryResults.current = null;
     
   const connect = {
-    url: apiUrl,
     websocket: true,
     additionalBodyProps: {records: lastQueryResults.current},
     stream: {simulation: 'stop-key'},
-    handler: async (body, signals) => {
+    handler: (body, signals) => {
     try {
         const websocket = new WebSocket(apiUrl);
         websocket.onopen = () => {
@@ -65,7 +64,7 @@ export const App = () => {
               synthesisData.current += response.text;
               chatResponse = ReactDOMServer.renderToString(<SynthesisTable synthesis={ synthesisData.current} />);
               lastQueryResults.current = null;
-              signals.onResponse({html: chatResponse, overwrite: false});
+              signals.onResponse({html: chatResponse, overwrite: true});
 
               }
             }
