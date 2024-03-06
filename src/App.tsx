@@ -17,7 +17,11 @@ export const App = () => {
   ];
   lastQueryResults.current = null;
     
-  const handler = (body, signals) => {
+  const request = {
+    url: apiUrl,
+    websocket: true,
+    additionalBodyProps: {records: lastQueryResults.current},
+    handler: async (body, signals) => {
     try {
         const websocket = new WebSocket(apiUrl);
         websocket.onopen = () => {
@@ -43,7 +47,7 @@ export const App = () => {
             typographer: true,
             });
 
-          const htmlResponse = remarkable.render(chatResponse + synthesisButton);
+          const htmlResponse = remarkable.render(chatResponse + synthesisButton,{});
           const highlightedResponse = htmlResponse.replace(/<em>/g, '<mark style="background-color: yellow;">').replace(/<\/em>/g, '</mark>');
           signals.onResponse({html: highlightedResponse, overwrite: false});
       
@@ -77,7 +81,8 @@ export const App = () => {
         signals.onResponse({error: 'error'}); // displays an error message
         signals.onClose(); // stops the user from sending messages
       }
-    };
+    }
+  }
       
   
 
@@ -86,12 +91,7 @@ export const App = () => {
     <div className="App">
       <DeepChat ref={deepchatref} 
       initialMessages={initialMessages}
-      request={{
-        url: apiUrl,
-        websocket: true,
-        additionalBodyProps: {records: lastQueryResults.current},
-        handler:handler
-      }}
+      request={request}
       style={{
         width: '100%',
         height: '100%',
