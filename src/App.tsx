@@ -19,7 +19,7 @@ export const App = () => {
     websocket: true,
     additionalBodyProps: {records: lastQueryResults.current},
     stream: {simulation: 'stop-key'},
-    handler: (body, signals) => {
+    handler: (_, signals) => {
     try {
         const websocket = new WebSocket(apiUrl);
         websocket.onopen = () => {
@@ -64,7 +64,8 @@ export const App = () => {
               synthesisData.current += response.text;
               chatResponse = ReactDOMServer.renderToString(<SynthesisTable synthesis={ synthesisData.current} />);
               lastQueryResults.current = null;
-              signals.onResponse({html: chatResponse, overwrite: true});
+              //signals.onResponse({html: chatResponse, overwrite: true});
+              signals.onResponse({html: '<div>div 1</div>'});
 
               }
             }
